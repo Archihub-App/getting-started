@@ -1,3 +1,4 @@
 {
-    "title": "ArchiHUB"
+    "title": "ArchiHUB",
+    "URL_API": "http://localhost:5000"
 }
