@@ -54,6 +54,7 @@ x-worker_env_variables: &worker_env_variables
   ELASTIC_PORT: ${ELASTIC_PORT}
   ELASTIC_INDEX_PREFIX: archihub-${ENVIRONMENT_NAME}
   HF_TOKEN: ${HF_TOKEN}
+  REDIRECT_URL: ${REDIRECT_URL}
 # --------------------------------------------
 x-mongo_db_env_variables: &mongo_db_env_variables
   MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
