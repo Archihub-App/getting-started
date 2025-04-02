@@ -128,26 +128,34 @@ services:
 
 # ----------------------- CELERY QUEUE SERVICE -----------------------
 
-  # celery_worker_2:
-  #   build:
-  #     context: ./backend
-  #     args:
-  #       - PORT=${BACKEND_PORT_FLASK}
-  #   environment:
-  #     <<: *worker_env_variables
-  #   volumes:
-  #     - "../userfiles:/app/userfiles"
-  #     - "../webfiles:/app/webfiles"
-  #     - "../original:/app/uploads"
-  #     - "../temporal:/app/temporal"
-  #   depends_on:
-  #     - archihub_flask_backend
-  #     - redis
-  #   working_dir: /app
-  #   command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO'
-  #   networks:
-  #     - archihub_mongo_network
-  #     - archihub_elastic_network
+  celery_worker_2:
+    build:
+      context: ./backend
+      args:
+        - PORT=${BACKEND_PORT_FLASK}
+    environment:
+      <<: *worker_env_variables
+      CUDA_VISIBLE_DEVICES: 0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - ${USERFILES_PATH}:/app/userfiles
+      - ${WEBFILE_PATH}:/app/webfiles
+      - ${UPLOAD_PATH}:/app/uploads
+      - ${TEMPORAL_PATH}:/app/temporal
+    depends_on:
+      - archihub_flask_backend
+      - redis
+    working_dir: /app
+    command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO -P solo'
+    networks:
+      - archihub_mongo_network
+      - archihub_elastic_network
 
 
 # ---------------------- ELASTICSEARCH SERVICE ----------------------
