@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkarchihub=self.webpackChunkarchihub||[]).push([[4679],{44679:function(e,t,n){n.r(t);n(65043);var a=n(15316),l=n(70579);t.default=function(){return(0,l.jsx)(a.A,{style:{display:"flex",alignContent:"flex-start",alignItems:"flex-start",width:"100%",flexWrap:"wrap",justifyContent:"center"},children:"Esto solo est\xe1 disponible en la versi\xf3n PRO de la aplicaci\xf3n."})}}}]);
-//# sourceMappingURL=4679.30bb4910.chunk.js.map
