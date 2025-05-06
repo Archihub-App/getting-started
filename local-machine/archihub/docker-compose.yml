@@ -85,6 +85,7 @@ services:
       context: ./backend
       args:
         - PORT=${BACKEND_PORT_FLASK}
+    restart: always
     ports:
       - ${BACKEND_PORT_FLASK}:${BACKEND_PORT_FLASK}
     environment:
@@ -99,6 +100,7 @@ services:
     depends_on:
       - archihub_mongodb_server_01
       - redis
+      - archihub_elasticsearch
     command: ["/bin/bash","/app/start.sh"]
     networks:
       - archihub_mongo_network
@@ -183,7 +185,7 @@ services:
 
 # ---------------------- ELASTICSEARCH SERVICE ----------------------
   archihub_elasticsearch:
-    image: elasticsearch:7.17.6
+    image: elasticsearch:7.17.28
     ports:
       - '9200:9200'
     environment:
