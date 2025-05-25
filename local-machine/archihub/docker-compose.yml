@@ -122,6 +122,7 @@ services:
     depends_on:
       - archihub_flask_backend
       - redis
+      - archihub_elasticsearch
     working_dir: /app
     command: 'celery --app app.celery_app worker --loglevel INFO'
     networks:
@@ -145,6 +146,7 @@ services:
   #   depends_on:
   #     - archihub_flask_backend
   #     - redis
+  #     - archihub_elasticsearch
   #   working_dir: /app
   #   command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO'
   #   networks:
@@ -176,6 +178,7 @@ services:
   #   depends_on:
   #     - archihub_flask_backend
   #     - redis
+  #     - archihub_elasticsearch
   #   working_dir: /app
   #   command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO -P solo'
   #   networks:
