@@ -1,4 +1,5 @@
 /local-machine/archihub/backend
+/local-machine/archihub/frontend/geojson
 /original/*
 /userfiles/*
 /webfiles/*
