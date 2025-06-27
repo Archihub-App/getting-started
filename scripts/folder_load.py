@@ -1,9 +1,18 @@
+# iterar desde la carpeta raiz
+# cargar cada carpeta usando el default type 
+# iterar recursivamente todas las carpetas
+
+# PASO1 crear el recurso de la carpeta raiz  - un Fondo
+# PASO2 al crear el recurso el API devuelve el identificador del recurso creado y eso se usa como parent para el siguiente recurso que se crea
+# ITERAR recursivamente SOLAMENTE las carpetas por ahora
+
+import os
+import dotenv
 import requests
 import json
 import datetime
-import os
 import argparse
-import dotenv
+
 
 dotenv.load_dotenv()
 
@@ -12,117 +21,142 @@ key = os.getenv('ARCHIHUB_API_KEY')
 api_url = os.getenv('ARCHIHUB_API_URL')
 headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key}
 
+# Funciones que crear en el API 
 def modify_dict(d, path, value):
     keys = path.split('.')
     for key in keys[:-1]:
         d = d.setdefault(key, {})
     d[keys[-1]] = value
 
-def get_resource(ident):
-    url = api_url + '/get_id'
-    r = requests.post(url, json={'ident': ident}, headers=headers)
-    if r.status_code == 200:
-        return json.loads(r.text)
+# Esto debe crear el recurso y devolvelo el identificador del recurso creado
+def create_resource(nombre, tipo, parentId=None, parent_type=None, publish=False):
+    if not parentId:
+        payload = {}
+        modify_dict(payload, 'metadata.firstLevel.title', nombre)
+
+        modify_dict(payload, 'post_type', tipo)
+        payload['filesIds'] = []
+        payload['status'] = 'published' if publish else 'draft'
+
+        # form
+        form = []
+        form.append(('data', (None, json.dumps(payload), 'application/json')))
+
+        # El recurso en ese folder
+        url = api_url + '/create'
+        r = requests.post(url, data={**payload}, files=form, headers={'Authorization': 'Bearer ' + key})
+        resp = r.json()
+        print(f"✅ Carpeta creada exitosamente: {nombre} (ID: {resp.get('id')})")
+        return resp.get('post_type'), resp.get('id')
+
     else:
+        payload = {}
+        modify_dict(payload, 'metadata.firstLevel.title', nombre)
+
+        modify_dict(payload, 'post_type', tipo)
+        payload['filesIds'] = []
+
+        parent_info = {"id": parentId, "post_type": parent_type}
+        payload['parent'] = [parent_info]
+        payload['parents'] = [parent_info]
+        payload['status'] = 'published' if publish else 'draft'
+
+        # form
+        form = []
+        form.append(('data', (None, json.dumps(payload), 'application/json')))
+
+        # El recurso en ese folder
+        url = api_url + '/create'
+        r = requests.post(url, data={**payload}, files=form, headers={'Authorization': 'Bearer ' + key})
+        resp = r.json()
+        print(f"   └── ✅ Subcarpeta creada: {nombre} (ID: {resp.get('id')})")
+        return resp.get('post_type'), resp.get('id')
+
+
+def crear_file(file, parentId, parent_type, publish=False):
+    if not parentId:
+        print("❌ Error: No se puede crear un archivo sin ID de carpeta padre")
         return None
+    
+    if not file:
+        print("❌ Error: No se especificó ningún archivo para subir")
+        return None
+    
+    expanded_path = os.path.expanduser(file)
 
-def folder_load(carpeta, default_type, main_type, original = False, parents = False, publish = False, avoid = False):
-    url = api_url + '/create'
-
-    nombre = os.path.basename(carpeta.rstrip(os.sep))
-    ruta = os.path.dirname(carpeta)
-
-    # si existe el archivo nombre.txt en la carpeta, se lee el contenido y se guarda en type
-    try:
-        ruta = os.path.join(ruta, nombre + '.txt')
-        with open(ruta, 'r', encoding='utf-8') as f:
-            type = f.read()
-    except:
-        type = default_type
-
+    nombre = os.path.basename(expanded_path).split('.')[0]
     payload = {}
     modify_dict(payload, 'metadata.firstLevel.title', nombre)
-    modify_dict(payload, 'post_type', type)
-    payload['filesIds'] = []
+    modify_dict(payload, 'post_type', 'unidad-documental')
+    modify_dict(payload, 'ident', datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))
+    
+    parent_info = {"id": parentId, "post_type": parent_type}
+    payload['parent'] = [parent_info]
+    payload['parents'] = [parent_info]
+    payload['status'] = 'published' if publish else 'draft'
 
-    ident = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
-    modify_dict(payload, 'ident', ident)
-
-
-    if parents:
-        payload['parents'] = parents
-        payload['parent'] = parents
-    if publish:
-        payload['status'] = 'published'
-
+    payload['filesIds'] = [{
+                            'file': 0,
+                            'filetag': 'archivo'
+                        }]
 
     form = []
+    form.append(('files', (os.path.basename(expanded_path), open(expanded_path, 'rb'))))
     form.append(('data', (None, json.dumps(payload), 'application/json')))
-    if not original:
-        r = requests.post(url, files=form, headers={'Authorization': 'Bearer ' + key})
-        print(r.json())
-        resource = get_resource(ident)
-    else:
-        print("Skiping Original folder")
-        resource = parents[0]
 
-    if resource:
-        parents = [resource]
-        num_children = len(os.listdir(carpeta))
-        folder_num = 0
-        files_num = 0
-        hasOriginalFolder = False
-        for file_name in os.listdir(carpeta):
-            if os.path.isdir(os.path.join(carpeta, file_name)):
-                if avoid:
-                    foldertoavoid = avoid.split(',')
-                    if file_name in foldertoavoid:
-                        print("Avoiding folder: " + file_name)
-                        hasOriginalFolder = True
+    url = api_url + '/create'
+    r = requests.post(url, files=form, headers={'Authorization': 'Bearer ' + key})
+    resp = r.json()
+    print(f"   └── ✅ Archivo subido: {os.path.basename(file)}")
+    return resp.get('post_type'), resp.get('id')
+
+    
+# Recorrer las carpetas y subcarpetas
+# Funcion recursiva que recorre las carpetas y subcarpetas y archivos
+def get_folders(ruta, nivel=0, parentId=None, parent_type=None, publish=False):
+    for nombre in os.listdir(ruta):
+        ruta_completa = os.path.join(ruta, nombre)
+        if os.path.isdir(ruta_completa):
+            print('  ' * nivel + f'- {nombre}')
+            # Aquí decides el tipo de recurso para la subcarpeta, por ejemplo 'serie'
+            tipo_subcarpeta = 'serie' 
+            tipo, id = create_resource(nombre, tipo_subcarpeta, parentId, parent_type, publish)
+            # Llamada recursiva con el nuevo id y tipo como parent
+            get_folders(ruta_completa, nivel + 1, id, tipo, publish)
+        else:
+            # Es un archivo, lo creamos con crear_file
+            print('  ' * (nivel + 1) + f'* {nombre}')
+            crear_file(ruta_completa, parentId, parent_type, publish)
 
 
-        # iterar en las carpetas de la carpeta
-        for file_name in os.listdir(carpeta):
-            file_path = os.path.join(carpeta, file_name)
-            
-            if os.path.isdir(file_path):
-                folder_num += 1
-                if hasOriginalFolder and file_name == 'Original':
-                    folder_load(file_path, default_type, main_type, True, parents, publish)
-                elif not hasOriginalFolder:
-                    folder_load(file_path, default_type, main_type, False, parents, publish)
-            else:
-                if not file_name.endswith('.txt'):
-                    files_num += 1
-                    nombre = file_name.split('.')[0]
-                    payload = {}
-                    modify_dict(payload, 'metadata.firstLevel.title', nombre)
-                    modify_dict(payload, 'post_type', 'unidad-documental')
-                    modify_dict(payload, 'ident', datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))
-                    payload['parent'] = parents
-                    payload['parents'] = parents
-                    if publish:
-                        payload['status'] = 'published'
 
-                    payload['filesIds'] = [{
-                                            'file': 0,
-                                            'filetag': 'archivo'
-                                        }]
-
-                    file_path = os.path.join(carpeta, file_name)
-                    form = []
-                    form.append(('files', (file_name, open(file_path, 'rb'))))
-                    form.append(('data', (None, json.dumps(payload), 'application/json')))
-
-                    r = requests.post(url, data={**payload}, files=form, headers={'Authorization': 'Bearer ' + key})
-
+# Get arguments
 parser = argparse.ArgumentParser(description='Load recursively a folder to Archihub')
 parser.add_argument('--folder', help='Folder to load recursively to Archihub', required=True)
-parser.add_argument('--default_type', help='Default type for the resources', required=True)
-parser.add_argument('--main_type', help='Main type for the resources', required=True)
 parser.add_argument('--publish', help='Publish the folder after loading', default=False)
-parser.add_argument('--avoid', help='Folders to skip', default=False)
+#parser.add_argument('--main_type', help='Main type for the resources', required=True)
+#parser.add_argument('--default_type', help='Default type for the resources', required=True)
+#parser.add_argument('--avoid', help='Folders to skip', default=False)
 args = parser.parse_args()
 
+# Normalizar la ruta y eliminar la barra final si existe
+ruta = os.path.normpath(os.path.expanduser(args.folder))
+print(f"\n📂 Ruta a procesar: {ruta}")
 
-folder_load(args.folder, args.default_type, args.main_type, False, False, args.publish, args.avoid)
+# Obtener el nombre del directorio
+if os.path.isfile(ruta):
+    nombre_directorio = os.path.basename(os.path.dirname(ruta))
+else:
+    nombre_directorio = os.path.basename(ruta)
+
+print(f"📝 Nombre del directorio raíz: {nombre_directorio}")
+print(f"📌 Publicar recursos: {'Sí' if args.publish else 'No'}")
+print("\n🚀 Iniciando proceso de carga...\n")
+
+# Crear el recurso raíz
+tipo, id = create_resource(nombre_directorio, 'fondo', publish=args.publish)
+
+# Procesar directorios y archivos
+get_folders(ruta, 0, id, tipo, publish=args.publish)
+
+print("\n✅ ¡Proceso completado con éxito!")
