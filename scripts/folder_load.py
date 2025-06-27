@@ -1,128 +1,154 @@
+import os
+import dotenv
 import requests
 import json
 import datetime
-import os
-import argparse
-import dotenv
 
+# Cargar variables de entorno
 dotenv.load_dotenv()
+API_KEY = os.getenv('ARCHIHUB_API_KEY')
+API_URL = os.getenv('ARCHIHUB_API_URL')
+HEADERS = {
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {API_KEY}'
+}
 
-key = os.getenv('ARCHIHUB_API_KEY')
-
-api_url = os.getenv('ARCHIHUB_API_URL')
-headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key}
-
+# Función auxiliar para modificar un diccionario anidado
 def modify_dict(d, path, value):
+    """
+    Modifica un diccionario anidado usando una ruta de claves separadas por puntos.
+    Args:
+        d (dict): Diccionario a modificar
+        path (str): Ruta de claves (ej: 'metadata.firstLevel.title')
+        value: Valor a asignar
+    """
     keys = path.split('.')
     for key in keys[:-1]:
         d = d.setdefault(key, {})
     d[keys[-1]] = value
 
-def get_resource(ident):
-    url = api_url + '/get_id'
-    r = requests.post(url, json={'ident': ident}, headers=headers)
-    if r.status_code == 200:
-        return json.loads(r.text)
-    else:
-        return None
+# Crear un recurso en la API
+def create_resource(nombre, tipo, parentId=None, parent_type=None):
+    """
+    Crea un recurso en la API y devuelve su tipo e ID.
+    Args:
+        nombre (str): Nombre del recurso
+        tipo (str): Tipo de recurso ('fondo', 'serie', etc.)
+        parentId (str, optional): ID del recurso padre
+        parent_type (str, optional): Tipo del recurso padre
+    Returns:
+        tuple: (tipo, id) del recurso creado
+    """
+    payload = {
+        'post_type': tipo,
+        'filesIds': [],
+        'metadata': {'firstLevel': {'title': nombre}}
+    }
 
-def folder_load(carpeta, default_type, main_type, original = False, parents = False, publish = False, avoid = False):
-    url = api_url + '/create'
+    if parentId and parent_type:
+        parent_info = {"id": parentId, "post_type": parent_type}
+        payload['parent'] = [parent_info]
+        payload['parents'] = [parent_info]
 
-    nombre = os.path.basename(carpeta.rstrip(os.sep))
-    ruta = os.path.dirname(carpeta)
+    # Preparar datos para la solicitud
+    form = [('data', (None, json.dumps(payload), 'application/json'))]
+    url = f'{API_URL}/create'
 
-    # si existe el archivo nombre.txt en la carpeta, se lee el contenido y se guarda en type
     try:
-        ruta = os.path.join(ruta, nombre + '.txt')
-        with open(ruta, 'r', encoding='utf-8') as f:
-            type = f.read()
-    except:
-        type = default_type
+        response = requests.post(url, data=payload, files=form, headers=HEADERS)
+        response.raise_for_status()  # Lanza excepción para códigos de error HTTP
+        resp = response.json()
+        return resp.get('post_type'), resp.get('id')
+    except requests.RequestException as e:
+        print(f"Error al crear recurso {nombre}: {e}")
+        return None, None
 
-    payload = {}
-    modify_dict(payload, 'metadata.firstLevel.title', nombre)
-    modify_dict(payload, 'post_type', type)
-    payload['filesIds'] = []
+# Crear un archivo en la API
+def crear_file(file, parentId, parent_type):
+    """
+    Crea un archivo en la API con su metadato asociado.
+    Args:
+        file (str): Ruta del archivo
+        parentId (str): ID del recurso padre
+        parent_type (str): Tipo del recurso padre
+    Returns:
+        tuple: (tipo, id) del archivo creado
+    """
+    if not parentId or not file:
+        print(f"Error: {'parentId' if not parentId else 'file'} no proporcionado")
+        return None, None
 
-    ident = datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')
-    modify_dict(payload, 'ident', ident)
+    expanded_path = os.path.expanduser(file)
+    nombre = os.path.basename(expanded_path).split('.')[0]
+    
+    payload = {
+        'post_type': 'unidad-documental',
+        'metadata': {'firstLevel': {'title': nombre}},
+        'ident': datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'),
+        'status': 'published',
+        'filesIds': [{'file': 0, 'filetag': 'archivo'}]
+    }
+    
+    parent_info = {"id": parentId, "post_type": parent_type}
+    payload['parent'] = [parent_info]
+    payload['parents'] = [parent_info]
 
+    try:
+        with open(expanded_path, 'rb') as f:
+            form = [
+                ('files', (os.path.basename(expanded_path), f)),
+                ('data', (None, json.dumps(payload), 'application/json'))
+            ]
+            url = f'{API_URL}/create'
+            response = requests.post(url, files=form, headers=HEADERS)
+            response.raise_for_status()
+            resp = response.json()
+            print(f'Archivo creado: {nombre}')
+            return resp.get('post_type'), resp.get('id')
+    except (requests.RequestException, FileNotFoundError) as e:
+        print(f"Error al crear archivo {nombre}: {e}")
+        return None, None
 
-    if parents:
-        payload['parents'] = parents
-        payload['parent'] = parents
-    if publish:
-        payload['status'] = 'published'
-
-
-    form = []
-    form.append(('data', (None, json.dumps(payload), 'application/json')))
-    if not original:
-        r = requests.post(url, files=form, headers={'Authorization': 'Bearer ' + key})
-        print(r.json())
-        resource = get_resource(ident)
-    else:
-        print("Skiping Original folder")
-        resource = parents[0]
-
-    if resource:
-        parents = [resource]
-        num_children = len(os.listdir(carpeta))
-        folder_num = 0
-        files_num = 0
-        hasOriginalFolder = False
-        for file_name in os.listdir(carpeta):
-            if os.path.isdir(os.path.join(carpeta, file_name)):
-                if avoid:
-                    foldertoavoid = avoid.split(',')
-                    if file_name in foldertoavoid:
-                        print("Avoiding folder: " + file_name)
-                        hasOriginalFolder = True
-
-
-        # iterar en las carpetas de la carpeta
-        for file_name in os.listdir(carpeta):
-            file_path = os.path.join(carpeta, file_name)
+# Recorrer carpetas y subcarpetas recursivamente
+def get_folders(ruta, nivel=0, parentId=None, parent_type=None):
+    """
+    Recorre carpetas recursivamente y crea recursos para carpetas y archivos.
+    Args:
+        ruta (str): Ruta de la carpeta a procesar
+        nivel (int): Nivel de indentación para visualización
+        parentId (str, optional): ID del recurso padre
+        parent_type (str, optional): Tipo del recurso padre
+    """
+    try:
+        for nombre in os.listdir(ruta):
+            ruta_completa = os.path.join(ruta, nombre)
+            indent = '  ' * nivel
             
-            if os.path.isdir(file_path):
-                folder_num += 1
-                if hasOriginalFolder and file_name == 'Original':
-                    folder_load(file_path, default_type, main_type, True, parents, publish)
-                elif not hasOriginalFolder:
-                    folder_load(file_path, default_type, main_type, False, parents, publish)
+            if os.path.isdir(ruta_completa):
+                print(f'{indent}- Carpeta: {nombre}')
+                tipo_subcarpeta = 'serie'
+                tipo, id = create_resource(nombre, tipo_subcarpeta, parentId, parent_type)
+                if id:  # Solo continuar si se creó el recurso correctamente
+                    get_folders(ruta_completa, nivel + 1, id, tipo)
             else:
-                if not file_name.endswith('.txt'):
-                    files_num += 1
-                    nombre = file_name.split('.')[0]
-                    payload = {}
-                    modify_dict(payload, 'metadata.firstLevel.title', nombre)
-                    modify_dict(payload, 'post_type', 'unidad-documental')
-                    modify_dict(payload, 'ident', datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))
-                    payload['parent'] = parents
-                    payload['parents'] = parents
-                    if publish:
-                        payload['status'] = 'published'
+                print(f'{indent}  * Archivo: {nombre}')
+                crear_file(ruta_completa, parentId, parent_type)
+    except OSError as e:
+        print(f"Error al procesar la carpeta {ruta}: {e}")
 
-                    payload['filesIds'] = [{
-                                            'file': 0,
-                                            'filetag': 'archivo'
-                                        }]
+# Punto de entrada principal
+def main():
+    """Función principal que inicia el proceso de creación de recursos."""
+    ruta = os.path.expanduser('~/dev/archihub/getting-started/scripts/Assets')
+    nombre_directorio = os.path.basename(ruta)
+    print(f"Procesando directorio raíz: {nombre_directorio}")
+    
+    # Crear recurso raíz (fondo)
+    tipo, id = create_resource(nombre_directorio, 'fondo')
+    if id:
+        get_folders(ruta, 0, id, tipo)
+    else:
+        print("Error al crear el recurso raíz")
 
-                    file_path = os.path.join(carpeta, file_name)
-                    form = []
-                    form.append(('files', (file_name, open(file_path, 'rb'))))
-                    form.append(('data', (None, json.dumps(payload), 'application/json')))
-
-                    r = requests.post(url, data={**payload}, files=form, headers={'Authorization': 'Bearer ' + key})
-
-parser = argparse.ArgumentParser(description='Load recursively a folder to Archihub')
-parser.add_argument('--folder', help='Folder to load recursively to Archihub', required=True)
-parser.add_argument('--default_type', help='Default type for the resources', required=True)
-parser.add_argument('--main_type', help='Main type for the resources', required=True)
-parser.add_argument('--publish', help='Publish the folder after loading', default=False)
-parser.add_argument('--avoid', help='Folders to skip', default=False)
-args = parser.parse_args()
-
-
-folder_load(args.folder, args.default_type, args.main_type, False, False, args.publish, args.avoid)
+if __name__ == "__main__":
+    main()
