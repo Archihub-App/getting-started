@@ -12,6 +12,7 @@ import requests
 import json
 import datetime
 
+
 dotenv.load_dotenv()
 
 key = os.getenv('ARCHIHUB_API_KEY')
