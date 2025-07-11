@@ -11,3 +11,4 @@
 
 /network/ansible/*
 !/network/ansible/examples
+*.Zone.Identifier
