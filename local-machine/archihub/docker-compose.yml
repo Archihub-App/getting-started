@@ -100,7 +100,8 @@ services:
     depends_on:
       - archihub_mongodb_server_01
       - redis
-      - archihub_elasticsearch
+      - archihub_elasticsearch:
+        condition: service_healthy
     command: ["/bin/bash","/app/start.sh"]
     networks:
       - archihub_mongo_network
