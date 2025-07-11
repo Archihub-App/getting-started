@@ -122,7 +122,8 @@ services:
     depends_on:
       - archihub_flask_backend
       - redis
-      - archihub_elasticsearch
+      - archihub_elasticsearch:
+        condition: service_healthy
     working_dir: /app
     command: 'celery --app app.celery_app worker --loglevel INFO'
     networks:
@@ -206,10 +207,11 @@ services:
     networks:
       - archihub_elastic_network
     healthcheck:
-      test: curl -s https://localhost:$ELASTIC_PORT >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=1s || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
+      start_period: 40s
 
 # ---------------------- FRONT END SERVICE ----------------------
   archihub_frontend:
