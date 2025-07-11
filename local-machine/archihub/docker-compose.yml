@@ -67,7 +67,7 @@ services:
 
 # ---------------------- MONGO DATABASE SERVICE ----------------------
   archihub_mongodb_server_01:
-    image: mongo:5.0.9
+    image: mongo:7.0.21
     ports:
       - "27017:27017"
     environment:
