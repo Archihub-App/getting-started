@@ -183,7 +183,7 @@ services:
   #     archihub_elasticsearch:
   #       condition: service_healthy
   #   working_dir: /app
-  #   command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO -P solo'
+  #   command: ["/bin/bash","-c","./start_celery.sh && celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO -P solo"]
   #   networks:
   #     - archihub_mongo_network
   #     - archihub_elastic_network
