@@ -100,8 +100,7 @@ services:
     depends_on:
       - archihub_mongodb_server_01
       - redis
-      - archihub_elasticsearch:
-        condition: service_healthy
+      - archihub_elasticsearch
     command: ["/bin/bash","/app/start.sh"]
     networks:
       - archihub_mongo_network
@@ -123,10 +122,9 @@ services:
     depends_on:
       - archihub_flask_backend
       - redis
-      - archihub_elasticsearch:
-        condition: service_healthy
+      - archihub_elasticsearch
     working_dir: /app
-    command: 'celery --app app.celery_app worker --loglevel INFO'
+    command: ["/bin/bash","-c","./start_celery.sh && celery --app app.celery_app worker --loglevel INFO"]
     networks:
       - archihub_mongo_network
       - archihub_elastic_network
@@ -141,16 +139,16 @@ services:
   #   environment:
   #     <<: *worker_env_variables
   #   volumes:
-  #     - "../userfiles:/app/userfiles"
-  #     - "../webfiles:/app/webfiles"
-  #     - "../original:/app/uploads"
-  #     - "../temporal:/app/temporal"
+  #     - ${USERFILES_PATH}:/app/userfiles
+  #     - ${WEBFILE_PATH}:/app/webfiles
+  #     - ${UPLOAD_PATH}:/app/uploads
+  #     - ${TEMPORAL_PATH}:/app/temporal
   #   depends_on:
   #     - archihub_flask_backend
   #     - redis
   #     - archihub_elasticsearch
   #   working_dir: /app
-  #   command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO'
+  #   command: ["/bin/bash","-c","./start_celery.sh && celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO -P solo"]
   #   networks:
   #     - archihub_mongo_network
   #     - archihub_elastic_network
@@ -178,9 +176,12 @@ services:
   #     - ${UPLOAD_PATH}:/app/uploads
   #     - ${TEMPORAL_PATH}:/app/temporal
   #   depends_on:
-  #     - archihub_flask_backend
-  #     - redis
-  #     - archihub_elasticsearch
+  #     archihub_flask_backend:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_started
+  #     archihub_elasticsearch:
+  #       condition: service_healthy
   #   working_dir: /app
   #   command: 'celery --app app.celery_app worker -Q high,medium,low  --loglevel INFO -P solo'
   #   networks:
