@@ -198,7 +198,7 @@ services:
       <<: *backend_env_variables
       "discovery.type": single-node
       "cluster.name": elasticsearch
-      "xpack.license.self_generated.type": trial
+      "xpack.license.self_generated.type": basic
       "node.name": ${ELASTIC_DOMAIN}
       "ES_JAVA_OPTS": "-Xms512m -Xmx512m"
       "http.cors.enabled": true
