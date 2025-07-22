@@ -105,6 +105,7 @@ services:
     networks:
       - archihub_mongo_network
       - archihub_elastic_network
+    stop_signal: SIGTERM
 
 # ----------------------- CELERY WORKER SERVICE -----------------------
   celery_worker:
@@ -128,6 +129,7 @@ services:
     networks:
       - archihub_mongo_network
       - archihub_elastic_network
+    stop_signal: SIGTERM
 
 # ----------------------- CELERY QUEUE SERVICE -----------------------
 
