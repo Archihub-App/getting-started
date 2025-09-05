@@ -26,6 +26,9 @@ x-backend_env_variables: &backend_env_variables
   ELASTIC_INDEX_PREFIX: archihub-${ENVIRONMENT_NAME}
   HF_TOKEN: ${HF_TOKEN}
   REDIRECT_URL: ${REDIRECT_URL}
+  OLLAMA_PATH: ${OLLAMA_PATH}
+  OLLAMA_HOST: ${OLLAMA_HOST}
+  OLLAMA_PORT: ${OLLAMA_PORT}
 # --------------------------------------------
 x-worker_env_variables: &worker_env_variables
   ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}
@@ -216,6 +219,33 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+
+# ----------------------- OLLAMA SERVICE -----------------------
+# With Ollama running, use the next command to add models to the service:
+# docker exec -it archihub-archihub_ollama-1 ollama pull <model_name>
+
+  # archihub_ollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - "${OLLAMA_PORT}:${OLLAMA_PORT}"
+  #   volumes:
+  #     - ${OLLAMA_PATH}:/root/.ollama
+  #   environment:
+  #     <<: *backend_env_variables
+  #     CUDA_VISIBLE_DEVICES: 0 # Comment this line if not using GPU
+  #   networks:
+  #     - archihub_mongo_network
+  #     - archihub_elastic_network
+  #   command: serve
+  #   # Comment the deploy section if not using GPU
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+  #   restart: unless-stopped
 
 # ---------------------- FRONT END SERVICE ----------------------
   archihub_frontend:
