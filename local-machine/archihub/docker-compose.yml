@@ -80,56 +80,56 @@ services:
       - archihub_mongo_network
 
 # ------------------------- ARCHIHUB FLASK BACKEND -------------------
-  archihub_flask_backend:
-    build:
-      context: ./backend
-      args:
-        - PORT=${BACKEND_PORT_FLASK}
-    restart: always
-    ports:
-      - ${BACKEND_PORT_FLASK}:${BACKEND_PORT_FLASK}
-    environment:
-      <<: *backend_env_variables
-    volumes:
-      - ./stash/elastic_certs:/stash/elastic_certs:ro
-      - ./stash/wait_for:/wait_for:ro
-      - ${USERFILES_PATH}:/app/userfiles
-      - ${WEBFILE_PATH}:/app/webfiles
-      - ${UPLOAD_PATH}:/app/uploads
-      - ${TEMPORAL_PATH}:/app/temporal
-    depends_on:
-      - archihub_mongodb_server_01
-      - redis
-      - archihub_elasticsearch
-    command: ["/bin/bash","/app/start.sh"]
-    networks:
-      - archihub_mongo_network
-      - archihub_elastic_network
-    stop_signal: SIGTERM
+#   archihub_flask_backend:
+#     build:
+#       context: ./backend
+#       args:
+#         - PORT=${BACKEND_PORT_FLASK}
+#     restart: always
+#     ports:
+#       - ${BACKEND_PORT_FLASK}:${BACKEND_PORT_FLASK}
+#     environment:
+#       <<: *backend_env_variables
+#     volumes:
+#       - ./stash/elastic_certs:/stash/elastic_certs:ro
+#       - ./stash/wait_for:/wait_for:ro
+#       - ${USERFILES_PATH}:/app/userfiles
+#       - ${WEBFILE_PATH}:/app/webfiles
+#       - ${UPLOAD_PATH}:/app/uploads
+#       - ${TEMPORAL_PATH}:/app/temporal
+#     depends_on:
+#       - archihub_mongodb_server_01
+#       - redis
+#       - archihub_elasticsearch
+#     command: ["/bin/bash","/app/start.sh"]
+#     networks:
+#       - archihub_mongo_network
+#       - archihub_elastic_network
+#     stop_signal: SIGTERM
 
-# ----------------------- CELERY WORKER SERVICE -----------------------
-  celery_worker:
-    build:
-      context: ./backend
-      args:
-        - PORT=${BACKEND_PORT_FLASK}
-    environment:
-      <<: *worker_env_variables
-    volumes:
-      - ${USERFILES_PATH}:/app/userfiles
-      - ${WEBFILE_PATH}:/app/webfiles
-      - ${UPLOAD_PATH}:/app/uploads
-      - ${TEMPORAL_PATH}:/app/temporal
-    depends_on:
-      - archihub_flask_backend
-      - redis
-      - archihub_elasticsearch
-    working_dir: /app
-    command: ["/bin/bash","-c","./start_celery.sh && celery --app app.celery_app worker --loglevel INFO"]
-    networks:
-      - archihub_mongo_network
-      - archihub_elastic_network
-    stop_signal: SIGTERM
+# # ----------------------- CELERY WORKER SERVICE -----------------------
+#   celery_worker:
+#     build:
+#       context: ./backend
+#       args:
+#         - PORT=${BACKEND_PORT_FLASK}
+#     environment:
+#       <<: *worker_env_variables
+#     volumes:
+#       - ${USERFILES_PATH}:/app/userfiles
+#       - ${WEBFILE_PATH}:/app/webfiles
+#       - ${UPLOAD_PATH}:/app/uploads
+#       - ${TEMPORAL_PATH}:/app/temporal
+#     depends_on:
+#       - archihub_flask_backend
+#       - redis
+#       - archihub_elasticsearch
+#     working_dir: /app
+#     command: ["/bin/bash","-c","./start_celery.sh && celery --app app.celery_app worker --loglevel INFO"]
+#     networks:
+#       - archihub_mongo_network
+#       - archihub_elastic_network
+#     stop_signal: SIGTERM
 
 # ----------------------- CELERY QUEUE SERVICE -----------------------
 
