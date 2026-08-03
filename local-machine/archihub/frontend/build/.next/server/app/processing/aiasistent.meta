@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/processing/layout,_N_T_/processing/aiasistent/layout,_N_T_/processing/aiasistent/page,_N_T_/processing/aiasistent"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/processing/aiasistent/__PAGE__",
+    "/processing/aiasistent",
+    "/processing",
+    "/_index",
+    "/_head"
+  ]
+}

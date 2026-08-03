@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/cataloging/layout,_N_T_/cataloging/usertasks/layout,_N_T_/cataloging/usertasks/page,_N_T_/cataloging/usertasks"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/cataloging/usertasks/__PAGE__",
+    "/cataloging/usertasks",
+    "/cataloging",
+    "/_index",
+    "/_head"
+  ]
+}
