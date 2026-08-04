@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/cataloging/layout,_N_T_/cataloging/types/layout,_N_T_/cataloging/types/new/layout,_N_T_/cataloging/types/new/page,_N_T_/cataloging/types/new"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/cataloging/types/new/__PAGE__",
+    "/cataloging/types/new",
+    "/cataloging/types",
+    "/cataloging",
+    "/_index",
+    "/_head"
+  ]
+}

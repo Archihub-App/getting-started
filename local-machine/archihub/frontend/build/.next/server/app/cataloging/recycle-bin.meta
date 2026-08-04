@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/cataloging/layout,_N_T_/cataloging/recycle-bin/layout,_N_T_/cataloging/recycle-bin/page,_N_T_/cataloging/recycle-bin"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/cataloging/recycle-bin/__PAGE__",
+    "/cataloging/recycle-bin",
+    "/cataloging",
+    "/_index",
+    "/_head"
+  ]
+}

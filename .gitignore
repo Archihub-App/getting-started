@@ -4,8 +4,10 @@
 /userfiles/*
 /webfiles/*
 /temporal/*
+/ollama/*
 /local-machine/data/mongodb/*
 /local-machine/data/elastic/*
+/local-machine/data/qdrant/*
 
 .env
 

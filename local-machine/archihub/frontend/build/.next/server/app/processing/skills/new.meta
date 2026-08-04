@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/processing/layout,_N_T_/processing/skills/layout,_N_T_/processing/skills/new/layout,_N_T_/processing/skills/new/page,_N_T_/processing/skills/new"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/processing/skills/new/__PAGE__",
+    "/processing/skills/new",
+    "/processing/skills",
+    "/processing",
+    "/_index",
+    "/_head"
+  ]
+}

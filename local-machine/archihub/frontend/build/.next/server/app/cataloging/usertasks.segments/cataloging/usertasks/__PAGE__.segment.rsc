@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[861304,[],"ClientPageRoot"]
+3:I[258171,["5600","static/chunks/05f6971a-6f467cb875ae5ade.js","7330","static/chunks/d3ac728e-ae756cb159ec122f.js","5592","static/chunks/c15bf2b0-a140c512faf2b47e.js","1263","static/chunks/92407c65-a6fd852b8d43ec67.js","3549","static/chunks/3549-cd275056c23d4d5b.js","3769","static/chunks/3769-97f23e05af0c6d52.js","655","static/chunks/655-b57a0d0bae778886.js","2834","static/chunks/2834-6a173f225c8355bd.js","688","static/chunks/688-716173f0a34faafd.js","7218","static/chunks/7218-82650dedbddef08e.js","2276","static/chunks/2276-dea1924c045f787c.js","4908","static/chunks/4908-87afae8ffac01430.js","9303","static/chunks/9303-2e7736f93ce593d0.js","3510","static/chunks/3510-8f444abff8c8cdb0.js","2044","static/chunks/2044-e7ada20c8a8825f1.js","8538","static/chunks/app/cataloging/usertasks/page-8f93f114fbb7cad3.js"],"default"]
+6:I[990484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"buildId":"QBq9DE_AHD_7XOlw9kCfL","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+4:{}
+5:{}
+8:null
