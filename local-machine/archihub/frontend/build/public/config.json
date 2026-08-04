@@ -1,7 +1,5 @@
 {
     "title": "ArchiHUB",
-    "URL_API_cinemateca": "https://cinemateca.bit-sol.com.co/api",
-    "URL_API_BITSOL": "https://archihub.bit-sol.com.co/api",
-    "URL_API": "http://192.168.1.217:5000",
+    "URL_API": "http://localhost:11000",
     "front_img": "frontpage.png"
 }

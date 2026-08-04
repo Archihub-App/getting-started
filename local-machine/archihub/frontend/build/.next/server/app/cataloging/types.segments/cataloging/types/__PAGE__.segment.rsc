@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
 2:I[861304,[],"ClientPageRoot"]
-3:I[830073,["5600","static/chunks/05f6971a-56471b6be3119649.js","7330","static/chunks/d3ac728e-acfb3f6d16db0094.js","5592","static/chunks/c15bf2b0-9d90493bb6c115d8.js","3549","static/chunks/3549-fb8d0ca61450cf21.js","3769","static/chunks/3769-3096a222aa9b765e.js","655","static/chunks/655-6493bf2979f3a6f1.js","2834","static/chunks/2834-be7a175c344e65a0.js","688","static/chunks/688-d624009973c4ea0a.js","7218","static/chunks/7218-91233af5c35e55db.js","2276","static/chunks/2276-8d6c2038710ea928.js","3951","static/chunks/3951-25a6dd34fec6bd5d.js","3510","static/chunks/3510-9218fd679adb6a7d.js","3560","static/chunks/app/cataloging/types/page-0268c5f594e2d81b.js"],"default"]
+3:I[830073,["5600","static/chunks/05f6971a-6f467cb875ae5ade.js","7330","static/chunks/d3ac728e-ae756cb159ec122f.js","5592","static/chunks/c15bf2b0-a140c512faf2b47e.js","3549","static/chunks/3549-cd275056c23d4d5b.js","3769","static/chunks/3769-97f23e05af0c6d52.js","655","static/chunks/655-b57a0d0bae778886.js","2834","static/chunks/2834-6a173f225c8355bd.js","688","static/chunks/688-716173f0a34faafd.js","7218","static/chunks/7218-82650dedbddef08e.js","2276","static/chunks/2276-dea1924c045f787c.js","3951","static/chunks/3951-b401c9273dcf2a4d.js","3510","static/chunks/3510-8f444abff8c8cdb0.js","3560","static/chunks/app/cataloging/types/page-fc5450ebf6848756.js"],"default"]
 6:I[990484,[],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"buildId":"4p9W71NAnIAKb_Cvo0Bvr","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"QBq9DE_AHD_7XOlw9kCfL","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
 4:{}
 5:{}
 8:null

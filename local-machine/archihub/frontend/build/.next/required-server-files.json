@@ -107,7 +107,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/home/nestor/Documents/Code/ArchiHUB/next-archihub-admin",
+    "outputFileTracingRoot": "/home/pedroruizcode/dev/upgrade_front",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -164,7 +164,7 @@
       "proxyPrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 23,
+      "cpus": 31,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptTimeoutInSeconds": 7,
@@ -300,11 +300,11 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "/home/nestor/Documents/Code/ArchiHUB/next-archihub-admin"
+      "root": "/home/pedroruizcode/dev/upgrade_front"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "/home/nestor/Documents/Code/ArchiHUB/next-archihub-admin",
+  "appDir": "/home/pedroruizcode/dev/upgrade_front",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",

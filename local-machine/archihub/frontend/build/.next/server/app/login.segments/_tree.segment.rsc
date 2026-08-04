@@ -3,4 +3,4 @@
 :HL["/_next/static/css/69631658f4807813.css","style"]
 :HL["/_next/static/css/982269dd7bf1b180.css","style"]
 :HL["/imgs/login_logo.png","image"]
-0:{"buildId":"4p9W71NAnIAKb_Cvo0Bvr","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"login","paramType":null,"paramKey":"login","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"QBq9DE_AHD_7XOlw9kCfL","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"login","paramType":null,"paramKey":"login","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
