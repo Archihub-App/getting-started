@@ -290,6 +290,12 @@
       "namedRegex": "^/favicon\\.ico(?:/)?$"
     },
     {
+      "page": "/flows",
+      "regex": "^/flows(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/flows(?:/)?$"
+    },
+    {
       "page": "/login",
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
@@ -326,12 +332,6 @@
       "namedRegex": "^/processing/atlas(?:/)?$"
     },
     {
-      "page": "/processing/flows",
-      "regex": "^/processing/flows(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/processing/flows(?:/)?$"
-    },
-    {
       "page": "/processing/skills",
       "regex": "^/processing/skills(?:/)?$",
       "routeKeys": {},
@@ -354,6 +354,18 @@
       "regex": "^/profile(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/profile(?:/)?$"
+    },
+    {
+      "page": "/upload",
+      "regex": "^/upload(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/upload(?:/)?$"
+    },
+    {
+      "page": "/views",
+      "regex": "^/views(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/views(?:/)?$"
     }
   ],
   "dataRoutes": [],
