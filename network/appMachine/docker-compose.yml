@@ -1,122 +1,189 @@
+# ArchiHUB application machine for a network installation.
+#
+# Runs the backend, the default Celery worker, the frontend and Redis. MongoDB
+# (see ../mongoCluster) and Elasticsearch run on other machines and are reached
+# through the addresses in `.env`. The same file starts a processing node on
+# another machine - see ../README.md.
+#
+# The backend and frontend are built from the `local-machine` folder of this
+# repository: run `local-machine/install.sh` first so `backend/` exists, and
+# copy the frontend build there.
+#
+# A variable in `.env` reaches a container ONLY if it is named below: compose
+# uses `.env` for ${VAR} substitution in this file, it injects nothing by itself.
+
 # ----------- ENVIRONMENT VARIABLES -----------
-x-backend_env_variables: &backend_env_variables
-  ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}
-  FRONTEND_HOST: ${FRONTEND_HOST}
-  FLASK_APP: app.py
-  FLASK_ENV: prod
-  FLASK_RUN_PORT: ${BACKEND_PORT_FLASK}
+x-archihub_env_variables: &archihub_env_variables
+  # Secrets - required, and identical on every machine of the installation.
+  JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+  FERNET_KEY: ${FERNET_KEY}
+  # Runtime
+  FASTAPI_ENV: ${FASTAPI_ENV:-PROD}
+  FASTAPI_RUN_PORT: ${BACKEND_PORT}
+  UVICORN_WORKERS: ${UVICORN_WORKERS:-4}
+  # Public address of the frontend, used to build password-reset links.
+  REDIRECT_URL: ${REDIRECT_URL}
+  # MongoDB replica set. The database is named after the instance.
+  MONGO_IP_SERVER: ${MONGO_HOSTS}
+  MONGO_PORT: ${MONGO_PORT:-27017}
+  MONGO_RS: ${MONGO_RS:-rs0}
   MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
   MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-  MONGO_INITDB_DATABASE: archihub-${ENVIRONMENT_NAME}
   MONGO_DATABASE: archihub-${ENVIRONMENT_NAME}
-  CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-  CELERY_BROKER_HOST: ${CELERY_BROKER_HOST}
-  FLASK_DEBUG: ${FLASK_DEBUG}
-  USER_FILES_PATH: ${USER_FILES_PATH}
-  WEB_FILES_PATH: ${WEB_FILES_PATH}
-  ORIGINAL_FILES_PATH: ${ORIGINAL_FILES_PATH}
-  TEMPORAL_FILES_PATH: ${TEMPORAL_FILES_PATH}
-  MONGO_IP_SERVER: ${MONGO_HOST}
-  MONGO_HOST: ${MONGO_HOST}
-  MONGO_PORT: '27017'
+  # Redis: Celery broker and application cache. On the application machine it
+  # is the local service; a processing node points REDIS_HOST at this machine.
+  CELERY_BROKER_URL: redis://${REDIS_HOST:-redis}
+  CELERY_BROKER_HOST: ${REDIS_HOST:-redis}
+  # Elasticsearch. The index prefix is named after the instance.
   ELASTIC_DOMAIN: ${ELASTIC_DOMAIN}
-  ELASTIC_USER: ${ELASTIC_USER}
+  ELASTIC_PORT: ${ELASTIC_PORT:-9200}
+  ELASTIC_USER: ${ELASTIC_USER:-elastic}
   ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-  ELASTIC_PORT: ${ELASTIC_PORT}
   ELASTIC_INDEX_PREFIX: archihub-${ENVIRONMENT_NAME}
-  HF_TOKEN: ${HF_TOKEN}
-# --------------------------------------------
+  # CA certificate for an Elasticsearch served over HTTPS, as a path inside the
+  # container (the ./elastic_certs folder is mounted at /app/elastic_certs).
+  ELASTIC_CERT: ${ELASTIC_CERT:-}
+  # Storage roots inside the image; the shared host directories are mounted
+  # onto them.
+  USER_FILES_PATH: /app/userfiles
+  WEB_FILES_PATH: /app/webfiles
+  ORIGINAL_FILES_PATH: /app/uploads
+  TEMPORAL_FILES_PATH: /app/temporal
+  # Node-to-node cache invalidation: a worker that finishes a derivative asks
+  # the backend to flush its cache, presenting NODE_TOKEN as a Bearer key. A
+  # processing node points MASTER_HOST at this machine's backend.
+  MASTER_HOST: ${MASTER_HOST:-http://archihub_backend:${BACKEND_PORT}}
+  NODE_TOKEN: ${NODE_TOKEN}
+  # Plugin settings are NOT listed here: each plugin reads its own
+  # `backend/archihub/plugins/<plugin>/.env`, mounted below. A variable set
+  # here - even to an empty value - would take precedence over that file.
+  PLUGIN_CONFIG_PATH: /app/plugin_config
+
 x-worker_env_variables: &worker_env_variables
-  ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}
-  FRONTEND_HOST: ${FRONTEND_HOST}
-  FLASK_APP: app.py
-  FLASK_ENV: prod
-  FLASK_RUN_PORT: ${BACKEND_PORT_FLASK}
-  MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-  MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-  MONGO_INITDB_DATABASE: archihub-${ENVIRONMENT_NAME}
-  MONGO_DATABASE: archihub-${ENVIRONMENT_NAME}
-  CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-  CELERY_BROKER_HOST: ${CELERY_BROKER_HOST}
-  FLASK_DEBUG: ${FLASK_DEBUG}
-  USER_FILES_PATH: ${USER_FILES_PATH}
-  WEB_FILES_PATH: ${WEB_FILES_PATH}
-  ORIGINAL_FILES_PATH: ${ORIGINAL_FILES_PATH}
-  TEMPORAL_FILES_PATH: ${TEMPORAL_FILES_PATH}
-  MONGO_IP_SERVER: ${MONGO_HOST}
-  MONGO_HOST: ${MONGO_HOST}
-  MONGO_PORT: '27017'
-  CELERY_WORKER: true
-  ELASTIC_DOMAIN: ${ELASTIC_DOMAIN}
-  ELASTIC_USER: ${ELASTIC_USER}
-  ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-  ELASTIC_PORT: ${ELASTIC_PORT}
-  ELASTIC_INDEX_PREFIX: archihub-${ENVIRONMENT_NAME}
-  HF_TOKEN: ${HF_TOKEN}
-# --------------------------------------------
-x-mongo_db_env_variables: &mongo_db_env_variables
-  MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-  MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-  MONGO_INITDB_DATABASE: archihub-${ENVIRONMENT_NAME}
-  MONGO_HOST: ${MONGO_HOST}
-  MONGO_PORT: '27017'
+  <<: *archihub_env_variables
+  CELERY_WORKER: 'true'
+  CELERYD_CONCURRENCY: ${CELERYD_CONCURRENCY:-1}
+
+x-archihub_volumes: &archihub_volumes
+  # Plugin settings. The image leaves out each plugin's `.env` (it holds
+  # credentials); PLUGIN_CONFIG_PATH makes plugins read them from here. Only the
+  # `.env` files are read from this mount - the plugin code that runs is the
+  # image's, so changing a plugin still requires a rebuild.
+  - ../../local-machine/archihub/backend/archihub/plugins:/app/plugin_config:ro
+  - ./elastic_certs:/app/elastic_certs:ro
+  # Every machine must mount the SAME storage (e.g. an NFS share).
+  - ${USERFILES_PATH}:/app/userfiles
+  - ${WEBFILE_PATH}:/app/webfiles
+  - ${UPLOAD_PATH}:/app/uploads
+  - ${TEMPORAL_PATH}:/app/temporal
 
 services:
 
-# ------------------------- ARCHIHUB FLASK BACKEND -------------------
-  archihub_flask_backend:
+# ------------------------- ARCHIHUB BACKEND -------------------------
+  archihub_backend:
     build:
-      context: ./backend
-      args:
-        - PORT=${BACKEND_PORT_FLASK}
+      context: ../../local-machine/archihub/backend
+    restart: always
     ports:
-      - ${BACKEND_PORT_FLASK}:${BACKEND_PORT_FLASK}
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     environment:
-      <<: *backend_env_variables
-    volumes:
-      - ./stash/elastic_certs:/stash/elastic_certs:ro
-      - ./stash/wait_for:/wait_for:ro
-      - ${USERFILES_PATH}:/app/userfiles
-      - ${WEBFILE_PATH}:/app/webfiles
-      - ${UPLOAD_PATH}:/app/uploads
-      - ${TEMPORAL_PATH}:/app/temporal
+      <<: *archihub_env_variables
+    volumes: *archihub_volumes
     depends_on:
       - redis
-    command: ["/bin/bash","/app/start.sh"]
+    command: ["/bin/bash", "/app/start.sh"]
+    stop_signal: SIGTERM
 
 # ----------------------- CELERY WORKER SERVICE -----------------------
+# Consumes the default queue, where the core pipeline runs: file processing,
+# indexing and most plugin jobs. `start_celery.sh` starts and supervises the
+# worker itself.
   celery_worker:
     build:
-      context: ./backend
-      args:
-        - PORT=${BACKEND_PORT_FLASK}
+      context: ../../local-machine/archihub/backend
+    restart: always
     environment:
       <<: *worker_env_variables
-    volumes:
-      - ${USERFILES_PATH}:/app/userfiles
-      - ${WEBFILE_PATH}:/app/webfiles
-      - ${UPLOAD_PATH}:/app/uploads
-      - ${TEMPORAL_PATH}:/app/temporal
+    volumes: *archihub_volumes
     depends_on:
-      - archihub_flask_backend
+      - archihub_backend
       - redis
-    working_dir: /app
-    command: 'celery --app app.celery_app worker --loglevel INFO'
+    command: ["/bin/bash", "/app/start_celery.sh"]
+    stop_signal: SIGTERM
 
-# ---------------------- FRONT END SERVICE ----------------------
+# ----------------------- CELERY BEAT SERVICE -----------------------
+# The scheduler for periodic tasks (scheduleSystemTasks). Enable it when
+# scheduled tasks are configured. Run exactly ONE across the whole
+# installation, or every scheduled task runs once per scheduler.
+
+  # celery_beat:
+  #   build:
+  #     context: ../../local-machine/archihub/backend
+  #   restart: always
+  #   environment:
+  #     <<: *worker_env_variables
+  #     CELERY_RUN_MODE: beat
+  #   volumes: *archihub_volumes
+  #   depends_on:
+  #     - redis
+  #   command: ["/bin/bash", "/app/start_celery.sh"]
+  #   stop_signal: SIGTERM
+
+# ------------------ CELERY WORKER FOR NAMED QUEUES ------------------
+# Some plugins send their jobs to a named queue (transcribeWhisperX: high,
+# atlasOCR: medium), which the default worker does not consume. Usually run on
+# a processing node with a GPU - see ../README.md. Remove the `deploy` section
+# on a machine without one.
+
+  # celery_worker_queues:
+  #   build:
+  #     context: ../../local-machine/archihub/backend
+  #   restart: always
+  #   environment:
+  #     <<: *worker_env_variables
+  #     CELERY_QUEUES: high,medium,low
+  #     CELERY_EXTRA_ARGS: -P solo
+  #     CUDA_VISIBLE_DEVICES: 0 # The GPU device to use
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+  #   volumes: *archihub_volumes
+  #   command: ["/bin/bash", "/app/start_celery.sh"]
+  #   stop_signal: SIGTERM
+
+# ---------------- FRONTEND SERVICE (NEXT.JS NODE PROCESS) ----------------
+  archihub_frontend_node:
+    build:
+      context: ../../local-machine/archihub/frontend
+      dockerfile: Dockerfile.node
+    restart: always
+    environment:
+      # Pages rendered on the server reach the backend by its service name.
+      URL_API_INTERNAL: http://archihub_backend:${BACKEND_PORT}
+    expose:
+      - "3000"
+
+# ---------------- FRONTEND SERVICE (NGINX REVERSE PROXY) ----------------
   archihub_frontend:
     build:
-      context: ./frontend
-      args:
-        - FLASK_PORT=${BACKEND_PORT_FLASK}
-    environment:
-      - FLASK_PORT=${BACKEND_PORT_FLASK}
+      context: ../../local-machine/archihub/frontend
+    restart: always
     ports:
       - "80:80"
     depends_on:
-      - archihub_flask_backend
+      - archihub_backend
+      - archihub_frontend_node
 
+# ---------------------- REDIS SERVICE ----------------------
+# Processing nodes on other machines connect to it, so REDIS_BIND is this
+# machine's network address when there are any. Redis has no password:
+# restrict the port to those machines with a firewall.
   redis:
     image: redis:6-alpine
+    restart: always
     ports:
-      - "6379:6379"
+      - "${REDIS_BIND:-127.0.0.1}:6379:6379"

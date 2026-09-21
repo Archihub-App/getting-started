@@ -198,10 +198,6 @@ parser.add_argument('--publish',
                    help='Publicar los recursos inmediatamente después de crearlos',
                    default=False)
 
-# Argumentos adicionales (actualmente comentados)
-# parser.add_argument('--main_type', help='Tipo principal para los recursos', required=True)
-# parser.add_argument('--default_type', help='Tipo por defecto para los recursos', required=True)
-# parser.add_argument('--avoid', help='Carpetas a omitir', default=False)
 
 # Procesar argumentos
 args = parser.parse_args()
