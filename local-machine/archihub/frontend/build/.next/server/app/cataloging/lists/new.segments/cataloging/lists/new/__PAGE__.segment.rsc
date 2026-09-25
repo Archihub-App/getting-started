@@ -1,6 +1,23 @@
 1:"$Sreact.fragment"
-2:I[23587,["5592","static/chunks/c15bf2b0-4283bca7a40ef58d.js","1831","static/chunks/bd904a5c-b93f31d4131fb66f.js","5600","static/chunks/05f6971a-a4a84d9c8cfa80e0.js","7330","static/chunks/d3ac728e-07f122558c189548.js","4935","static/chunks/e37a0b60-8f1aadc45a033f45.js","7924","static/chunks/e2ce8796-e0cf4bc404654273.js","529","static/chunks/529-18f662bfae7df6f7.js","8741","static/chunks/8741-a714c3b0c5a9776c.js","2834","static/chunks/2834-ac9f8fb3979dd738.js","5443","static/chunks/5443-7d1becb7b6c6e1f8.js","27","static/chunks/27-7070f32b2ac9db2a.js","1526","static/chunks/1526-67f744a19de59434.js","4086","static/chunks/4086-7b704f67c308795c.js","3969","static/chunks/3969-7af59e5f2149078b.js","3691","static/chunks/3691-82b48a818eda17f5.js","9193","static/chunks/9193-44f27cbcdfb47dcb.js","9807","static/chunks/9807-1936fc23213461d4.js","2817","static/chunks/app/cataloging/lists/new/page-dd3e44c525992e58.js"],"default"]
+2:I[23587,["5592","static/chunks/c15bf2b0-84e7b4fb962d5278.js","1831","static/chunks/bd904a5c-c94b374262cb1742.js","5600","static/chunks/05f6971a-a54841142ca90c7d.js","7330","static/chunks/d3ac728e-74c9d30c515f0c40.js","4935","static/chunks/e37a0b60-8d24feeeb5a0417d.js","7924","static/chunks/e2ce8796-5fcf9274ee65c741.js","529","static/chunks/529-ecc20ce3a290037d.js","8949","static/chunks/8949-5534d136ccd4b7a8.js","2834","static/chunks/2834-00c0dc25b6a2ee69.js","5443","static/chunks/5443-02e2ebce2cc78bfd.js","27","static/chunks/27-332864629ab334b0.js","1526","static/chunks/1526-892dfad7fc3386b1.js","409","static/chunks/409-766c11a90194ed6e.js","5350","static/chunks/5350-fa4e3e85a9aee46b.js","6753","static/chunks/6753-c9cbb9338c2fc0f6.js","5780","static/chunks/5780-0f06baafe9a9ced1.js","9807","static/chunks/9807-ecf6dc8925278a44.js","2817","static/chunks/app/cataloging/lists/new/page-6ae6fa6f4aa825a9.js"],"default"]
 3:I[90484,[],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"buildId":"Lg6TfbXY84R08YnbBll5z","rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+8:I[90484,[],"ViewportBoundary"]
+9:I[90484,[],"MetadataBoundary"]
+a:I[86869,[],"IconMark"]
+c:I[57121,[],""]
+d:I[74581,[],""]
+7:X
+f:X
+f:C
+0:{"buildId":"7w_NDNtiWxgXpLk1notnd","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","link","0",{"rel":"icon","href":"/favicon.ico?b329e8f1373068ca","type":"image/x-icon","sizes":"16x16"}],["$","$La","1",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@b","staleTime":"$7","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@e","staleTime":"$7","varyParams":"$f"},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@10","staleTime":"$7","varyParams":"$f"},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@11","staleTime":"$7","varyParams":"$f"}],"isUpgradeableISRFallback":false,"a":"$@12","rootVaryParams":null,"needsRuntimeRequest":"$@13"}
 5:null
+13:true
+7:300
+7:C
+12:0
+b:"$undefined"
+e:"$undefined"
+10:"$undefined"
+11:"$undefined"
+6:"$undefined"

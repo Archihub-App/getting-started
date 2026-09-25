@@ -7,11 +7,31 @@
   "segmentPaths": [
     "/_tree",
     "/_full",
-    "/admin/users/new/__PAGE__",
-    "/admin/users/new",
-    "/admin/users",
-    "/admin",
     "/_index",
-    "/_head"
-  ]
+    "/admin/users/new/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 96,
+                "slots": {
+                  "children": {
+                    "hints": 160,
+                    "slots": null
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

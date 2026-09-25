@@ -7,11 +7,31 @@
   "segmentPaths": [
     "/_tree",
     "/_full",
-    "/processing/skills/new/__PAGE__",
-    "/processing/skills/new",
-    "/processing/skills",
-    "/processing",
     "/_index",
-    "/_head"
-  ]
+    "/processing/skills/new/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 96,
+                "slots": {
+                  "children": {
+                    "hints": 160,
+                    "slots": null
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

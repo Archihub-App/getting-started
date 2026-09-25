@@ -8,9 +8,20 @@
   "segmentPaths": [
     "/_tree",
     "/_full",
-    "/_global-error/__PAGE__",
-    "/_global-error",
-    "/_index",
-    "/_head"
-  ]
+    "/_global-error/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  }
 }

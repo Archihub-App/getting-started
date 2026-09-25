@@ -7,11 +7,31 @@
   "segmentPaths": [
     "/_tree",
     "/_full",
-    "/cataloging/types/new/__PAGE__",
-    "/cataloging/types/new",
-    "/cataloging/types",
-    "/cataloging",
     "/_index",
-    "/_head"
-  ]
+    "/cataloging/types/new/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 96,
+                "slots": {
+                  "children": {
+                    "hints": 160,
+                    "slots": null
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

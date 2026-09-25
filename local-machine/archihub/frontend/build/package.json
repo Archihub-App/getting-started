@@ -31,7 +31,7 @@
     "lucide-react": "^1.11.0",
     "maplibre-gl": "^5.20.2",
     "medium-editor": "^5.23.3",
-    "next": "16.1.6",
+    "next": "16.3.6",
     "react": "19.2.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -74,7 +74,7 @@
     "@types/react-resizable": "^3.0.8",
     "@types/three": "^0.183.1",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "16.3.6",
     "tailwindcss": "^4",
     "typescript": "^5",
     "webpack-obfuscator": "^3.6.1"

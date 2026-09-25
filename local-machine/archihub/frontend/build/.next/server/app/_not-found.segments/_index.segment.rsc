@@ -1,10 +1,7 @@
 1:"$Sreact.fragment"
-6:I[92989,["5592","static/chunks/c15bf2b0-4283bca7a40ef58d.js","1831","static/chunks/bd904a5c-b93f31d4131fb66f.js","5600","static/chunks/05f6971a-a4a84d9c8cfa80e0.js","7330","static/chunks/d3ac728e-07f122558c189548.js","4935","static/chunks/e37a0b60-8f1aadc45a033f45.js","7924","static/chunks/e2ce8796-e0cf4bc404654273.js","529","static/chunks/529-18f662bfae7df6f7.js","8741","static/chunks/8741-a714c3b0c5a9776c.js","2834","static/chunks/2834-ac9f8fb3979dd738.js","5443","static/chunks/5443-7d1becb7b6c6e1f8.js","27","static/chunks/27-7070f32b2ac9db2a.js","1526","static/chunks/1526-67f744a19de59434.js","4086","static/chunks/4086-7b704f67c308795c.js","3969","static/chunks/3969-7af59e5f2149078b.js","8735","static/chunks/8735-e836d39f4326321c.js","4005","static/chunks/4005-14bb0bb20a5030c8.js","6871","static/chunks/6871-622d1f4c92ce9e98.js","3691","static/chunks/3691-82b48a818eda17f5.js","9193","static/chunks/9193-44f27cbcdfb47dcb.js","7177","static/chunks/app/layout-301036a2512d6dcb.js"],"Providers"]
-7:I[57121,[],""]
-8:I[74581,[],""]
-:HL["/_next/static/css/6edc55bc415333f0.css","style"]
-:HL["/_next/static/css/2e2e4dad4e8364fe.css","style"]
-:HL["/_next/static/css/7d3a6fec7ac23f25.css","style"]
+:HL["/_next/static/css/b701b8adc5efcd4d.css","style"]
+:HL["/_next/static/css/21476c53221a5f5a.css","style"]
+:HL["/_next/static/css/27d88c4b70c40249.css","style"]
 :HL["/_next/static/css/ba7a18ce0cfa4352.css","style"]
 2:T1381,
     (function() {
@@ -130,8 +127,12 @@
         });
       } catch(e) {}
     })()
-  0:{"buildId":"Lg6TfbXY84R08YnbBll5z","rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/6edc55bc415333f0.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/2e2e4dad4e8364fe.css","precedence":"next"}],["$","link","2",{"rel":"stylesheet","href":"/_next/static/css/7d3a6fec7ac23f25.css","precedence":"next"}],["$","link","3",{"rel":"stylesheet","href":"/_next/static/css/ba7a18ce0cfa4352.css","precedence":"next"}]],["$","html",null,{"lang":"en","className":"__variable_8b3a0b __variable_c8daab","data-theme":"light","style":{"backgroundColor":"#FAF9F8","color":"#2C2B28"},"suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}],"$L3"]}],"$L4"]}]]}],"loading":null,"isPartial":false}
-5:T616,
+  6:X
+0:{"buildId":"7w_NDNtiWxgXpLk1notnd","data":[{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/b701b8adc5efcd4d.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/21476c53221a5f5a.css","precedence":"next"}],["$","link","2",{"rel":"stylesheet","href":"/_next/static/css/27d88c4b70c40249.css","precedence":"next"}],["$","link","3",{"rel":"stylesheet","href":"/_next/static/css/ba7a18ce0cfa4352.css","precedence":"next"}]],["$","html",null,{"lang":"en","className":"__variable_8b3a0b __variable_c8daab","data-theme":"light","style":{"backgroundColor":"#FAF9F8","color":"#2C2B28"},"suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}],"$L3"]}],"$L4"]}]]}],"isPartial":"$@5","staleTime":"$6","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@7","rootVaryParams":null,"needsRuntimeRequest":"$@8"}
+a:I[92989,["5592","static/chunks/c15bf2b0-84e7b4fb962d5278.js","1831","static/chunks/bd904a5c-c94b374262cb1742.js","5600","static/chunks/05f6971a-a54841142ca90c7d.js","7330","static/chunks/d3ac728e-74c9d30c515f0c40.js","4935","static/chunks/e37a0b60-8d24feeeb5a0417d.js","7924","static/chunks/e2ce8796-5fcf9274ee65c741.js","529","static/chunks/529-ecc20ce3a290037d.js","8949","static/chunks/8949-5534d136ccd4b7a8.js","2834","static/chunks/2834-00c0dc25b6a2ee69.js","5443","static/chunks/5443-02e2ebce2cc78bfd.js","27","static/chunks/27-332864629ab334b0.js","1526","static/chunks/1526-892dfad7fc3386b1.js","409","static/chunks/409-766c11a90194ed6e.js","5350","static/chunks/5350-fa4e3e85a9aee46b.js","8735","static/chunks/8735-d6e074694598bb7a.js","4005","static/chunks/4005-42bb7eabec36abc6.js","6871","static/chunks/6871-10ea1f3c1961ddf5.js","6753","static/chunks/6753-c9cbb9338c2fc0f6.js","5780","static/chunks/5780-0f06baafe9a9ced1.js","7177","static/chunks/app/layout-08547b19ada02053.js"],"Providers"]
+b:I[57121,[],""]
+c:I[74581,[],""]
+9:T616,
     // --- ATLAS CORE INITIALIZATION ---
     const _atlas_core_state_0 = "ATENCIÓN: Este código es propiedad privada y exclusiva de BitSol.";
     const _atlas_core_state_1 = "ADVERTENCIA: Queda estrictamente prohibida la desofuscación, ingeniería inversa o copia de este código.";
@@ -151,5 +152,10 @@
     window._atlas_state_5 = _atlas_core_state_5;
     window._atlas_state_6 = _atlas_core_state_6;
     window._atlas_state_7 = _atlas_core_state_7;
-  3:["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$5"}}]
-4:["$","body",null,{"style":{"backgroundColor":"var(--superficie-base, #FAF9F8)","color":"var(--texto-principal, #2C2B28)","minHeight":"100vh"},"children":["$","$L6",null,{"children":["$","$L7",null,{"parallelRouterKey":"children","template":["$","$L8",null,{}]}]}]}]
+  3:["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$9"}}]
+4:["$","body",null,{"style":{"backgroundColor":"var(--superficie-base, #FAF9F8)","color":"var(--texto-principal, #2C2B28)","minHeight":"100vh"},"children":["$","$La",null,{"children":["$","$Lb",null,{"parallelRouterKey":"children","template":["$","$Lc",null,{}]}]}]}]
+6:300
+8:true
+6:C
+7:0
+5:"$undefined"
