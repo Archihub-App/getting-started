@@ -33,5 +33,13 @@
         }
       }
     }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/b52019227ab139d9b81208924c82a6be4b967152b440c9e6cfcf1bdb9471fb5c/$/admin/users/new",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/admin/users/new/page"
+    },
+    "isFallback": false
   }
 }

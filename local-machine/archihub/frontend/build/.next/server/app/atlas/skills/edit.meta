@@ -1,0 +1,45 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/atlas/layout,_N_T_/atlas/skills/layout,_N_T_/atlas/skills/edit/layout,_N_T_/atlas/skills/edit/page,_N_T_/atlas/skills/edit"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/_index",
+    "/atlas/skills/edit/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 96,
+                "slots": {
+                  "children": {
+                    "hints": 160,
+                    "slots": null
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/d6a1f472f437394b3ef622645ed9cfdb190070a286d10986cf07170d33e97ff4/$/atlas/skills/edit",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/atlas/skills/edit/page"
+    },
+    "isFallback": false
+  }
+}

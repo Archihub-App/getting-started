@@ -224,6 +224,12 @@
       "namedRegex": "^/admin/logs(?:/)?$"
     },
     {
+      "page": "/admin/permissions",
+      "regex": "^/admin/permissions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/permissions(?:/)?$"
+    },
+    {
       "page": "/admin/plugins",
       "regex": "^/admin/plugins(?:/)?$",
       "routeKeys": {},
@@ -246,6 +252,30 @@
       "regex": "^/admin/users/new(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/users/new(?:/)?$"
+    },
+    {
+      "page": "/atlas",
+      "regex": "^/atlas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/atlas(?:/)?$"
+    },
+    {
+      "page": "/atlas/skills",
+      "regex": "^/atlas/skills(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/atlas/skills(?:/)?$"
+    },
+    {
+      "page": "/atlas/skills/edit",
+      "regex": "^/atlas/skills/edit(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/atlas/skills/edit(?:/)?$"
+    },
+    {
+      "page": "/atlas/skills/new",
+      "regex": "^/atlas/skills/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/atlas/skills/new(?:/)?$"
     },
     {
       "page": "/cataloging",
@@ -356,34 +386,16 @@
       "namedRegex": "^/processing/aiasistent/new(?:/)?$"
     },
     {
-      "page": "/processing/atlas",
-      "regex": "^/processing/atlas(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/processing/atlas(?:/)?$"
-    },
-    {
-      "page": "/processing/skills",
-      "regex": "^/processing/skills(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/processing/skills(?:/)?$"
-    },
-    {
-      "page": "/processing/skills/edit",
-      "regex": "^/processing/skills/edit(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/processing/skills/edit(?:/)?$"
-    },
-    {
-      "page": "/processing/skills/new",
-      "regex": "^/processing/skills/new(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/processing/skills/new(?:/)?$"
-    },
-    {
       "page": "/profile",
       "regex": "^/profile(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/profile(?:/)?$"
+    },
+    {
+      "page": "/reset-password",
+      "regex": "^/reset\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reset\\-password(?:/)?$"
     },
     {
       "page": "/upload",

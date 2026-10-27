@@ -28,5 +28,13 @@
         }
       }
     }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/12a5e8bbd91b84b6183349d5e18a9d151268db1f3a326f7f75112f48203b85dd/$/admin/users",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/admin/users/page"
+    },
+    "isFallback": false
   }
 }

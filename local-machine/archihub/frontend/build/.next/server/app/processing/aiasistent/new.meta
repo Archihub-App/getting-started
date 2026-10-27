@@ -33,5 +33,13 @@
         }
       }
     }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/0ea8e0d3b1106b5c434f726dedbea1b9b87f44d59826c52e3d45a07014235635/$/processing/aiasistent/new",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/processing/aiasistent/new/page"
+    },
+    "isFallback": false
   }
 }

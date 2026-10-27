@@ -1,0 +1,35 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/atlas/layout,_N_T_/atlas/page,_N_T_/atlas"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/_index",
+    "/atlas/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/775e0961d19a3d00025d73463dcc308b2704f930709756ba703a0f11203cfee3/$/atlas",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/atlas/page"
+    },
+    "isFallback": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/permissions/layout,_N_T_/admin/permissions/page,_N_T_/admin/permissions"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/_index",
+    "/admin/permissions/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 160,
+                "slots": null
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/3e4de6b99c0a0db5b7874baddcd8ac4adc2000941da5fc20395c9389ff95ba86/$/admin/permissions",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/admin/permissions/page"
+    },
+    "isFallback": false
+  }
+}
