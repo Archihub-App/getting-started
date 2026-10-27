@@ -58,3 +58,24 @@ if [ -n "${BACKEND_BRANCH:-}" ]; then
 else
     git clone https://github.com/Archihub-App/archihub-backend.git ./archihub/backend
 fi
+
+# ---- límites administrativos ----
+# Los archivos de límites (archihub/data/geo, ~24 MB) no vienen en el
+# repositorio. Si GEO_DATA_ARCHIVE apunta a un .tar.gz con las carpetas
+# admin_0, admin_1, ... (una ruta local o una URL https), se instalan en el
+# backend antes de construir la imagen; si no, el mapa queda sin límites hasta
+# que se carguen.
+GEO_DIR=./archihub/backend/archihub/data/geo
+if [ -n "${GEO_DATA_ARCHIVE:-}" ]; then
+    mkdir -p "$GEO_DIR"
+    case "$GEO_DATA_ARCHIVE" in
+        https://*)
+            curl -fsSL "$GEO_DATA_ARCHIVE" | tar -xz -C "$GEO_DIR" ;;
+        *)
+            tar -xzf "$GEO_DATA_ARCHIVE" -C "$GEO_DIR" ;;
+    esac
+    echo "Límites administrativos instalados en $GEO_DIR"
+else
+    echo "AVISO: no se instalaron límites administrativos (defina GEO_DATA_ARCHIVE)."
+    echo "       Sin ellos, /system/geo-load no tiene nada que cargar."
+fi

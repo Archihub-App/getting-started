@@ -23,5 +23,13 @@
         }
       }
     }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/92223be7a8f95f03edd67343bbf5b375a2de243c2d1f40569e9f2b817e5085d7/$/logout",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/logout/page"
+    },
+    "isFallback": false
   }
 }

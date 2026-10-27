@@ -33,7 +33,7 @@ Requiere Docker con _docker compose_ y `openssl`.
    ./install.sh
    ```
 
-   Crea `archihub/.env` a partir de `archihub/.env.bak` con credenciales nuevas, crea las carpetas de datos y descarga el backend en `archihub/backend`. Si `archihub/.env` ya existe, no lo modifica. Para descargar una rama concreta del backend: `BACKEND_BRANCH=<rama> ./install.sh`.
+   Crea `archihub/.env` a partir de `archihub/.env.bak` con credenciales nuevas, crea las carpetas de datos y descarga el backend en `archihub/backend`. Si `archihub/.env` ya existe, no lo modifica. Para descargar una rama concreta del backend: `BACKEND_BRANCH=<rama> ./install.sh`. Los límites administrativos del mapa no vienen en el repositorio del backend: para instalarlos, pase un `.tar.gz` con las carpetas `admin_0`, `admin_1`, … como ruta local o URL https, `GEO_DATA_ARCHIVE=<archivo o URL> ./install.sh`, y luego cárguelos desde la configuración del sistema.
 
 3. Revisar `archihub/.env`. Las variables están explicadas en el mismo archivo; las más importantes son:
 
