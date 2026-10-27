@@ -48,6 +48,8 @@ x-archihub_env_variables: &archihub_env_variables
   # is the local service; a processing node points REDIS_HOST at this machine.
   CELERY_BROKER_URL: redis://${REDIS_HOST:-redis}
   CELERY_BROKER_HOST: ${REDIS_HOST:-redis}
+  # Time zone scheduled tasks' hours are read in.
+  CELERY_TIMEZONE: ${CELERY_TIMEZONE:-America/Bogota}
   # Elasticsearch. The index prefix is named after the instance.
   ELASTIC_DOMAIN: ${ELASTIC_DOMAIN}
   ELASTIC_PORT: ${ELASTIC_PORT:-9200}
@@ -124,11 +126,14 @@ services:
       - redis
     command: ["/bin/bash", "/app/start_celery.sh"]
     stop_signal: SIGTERM
+    # A warm shutdown lets the running job finish; a job killed mid-run is
+    # redelivered only after the broker visibility timeout (12 h).
+    stop_grace_period: 10m
 
 # ----------------------- CELERY BEAT SERVICE -----------------------
-# The scheduler for periodic tasks (scheduleSystemTasks). Enable it when
-# scheduled tasks are configured. Run exactly ONE across the whole
-# installation, or every scheduled task runs once per scheduler.
+# The scheduler for periodic tasks: the core housekeeping (staged uploads
+# nobody attached) and scheduleSystemTasks. Enable it on exactly ONE machine of
+# the installation, or every scheduled task runs once per scheduler.
 
   # celery_beat:
   #   build:
@@ -142,6 +147,7 @@ services:
   #     - redis
   #   command: ["/bin/bash", "/app/start_celery.sh"]
   #   stop_signal: SIGTERM
+  #   stop_grace_period: 10m
 
 # ------------------ CELERY WORKER FOR NAMED QUEUES ------------------
 # Some plugins send their jobs to a named queue (transcribeWhisperX: high,
@@ -168,6 +174,7 @@ services:
   #   volumes: *archihub_volumes
   #   command: ["/bin/bash", "/app/start_celery.sh"]
   #   stop_signal: SIGTERM
+  #   stop_grace_period: 10m
 
 # ---------------- FRONTEND SERVICE (NEXT.JS NODE PROCESS) ----------------
   archihub_frontend_node:

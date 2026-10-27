@@ -42,12 +42,18 @@ x-archihub_env_variables: &archihub_env_variables
   # Redis: Celery broker and application cache.
   CELERY_BROKER_URL: redis://redis
   CELERY_BROKER_HOST: redis
+  # Time zone scheduled tasks' hours are read in.
+  CELERY_TIMEZONE: ${CELERY_TIMEZONE:-America/Bogota}
   # Elasticsearch. The index prefix is named after the instance.
   ELASTIC_DOMAIN: http://archihub_elasticsearch
   ELASTIC_PORT: '9200'
   ELASTIC_USER: ${ELASTIC_USER:-elastic}
   ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
   ELASTIC_INDEX_PREFIX: archihub-${ENVIRONMENT_NAME}
+  # Qdrant, used only when the vector database is switched on (see the
+  # commented `qdrant` service below).
+  VECTOR_HOST: ${VECTOR_HOST:-qdrant}
+  VECTOR_PORT: ${VECTOR_PORT:-6333}
   # Storage roots inside the image; the host directories are mounted onto them.
   USER_FILES_PATH: /app/userfiles
   WEB_FILES_PATH: /app/webfiles
@@ -139,28 +145,32 @@ services:
       - archihub_mongo_network
       - archihub_elastic_network
     stop_signal: SIGTERM
+    # A warm shutdown lets the running job finish; a job killed mid-run is
+    # redelivered only after the broker visibility timeout (12 h).
+    stop_grace_period: 10m
 
 # ----------------------- CELERY BEAT SERVICE -----------------------
-# The scheduler for periodic tasks (scheduleSystemTasks). Enable it when
-# scheduled tasks are configured. Run exactly ONE across the whole
+# The scheduler for periodic tasks: the core housekeeping (staged uploads
+# nobody attached) and scheduleSystemTasks. Run exactly ONE across the whole
 # installation, or every scheduled task runs once per scheduler.
 
-  # celery_beat:
-  #   build:
-  #     context: ./backend
-  #   restart: always
-  #   environment:
-  #     <<: *worker_env_variables
-  #     CELERY_RUN_MODE: beat
-  #   volumes: *archihub_volumes
-  #   depends_on:
-  #     - redis
-  #     - archihub_elasticsearch
-  #   command: ["/bin/bash", "/app/start_celery.sh"]
-  #   networks:
-  #     - archihub_mongo_network
-  #     - archihub_elastic_network
-  #   stop_signal: SIGTERM
+  celery_beat:
+    build:
+      context: ./backend
+    restart: always
+    environment:
+      <<: *worker_env_variables
+      CELERY_RUN_MODE: beat
+    volumes: *archihub_volumes
+    depends_on:
+      - redis
+      - archihub_elasticsearch
+    command: ["/bin/bash", "/app/start_celery.sh"]
+    networks:
+      - archihub_mongo_network
+      - archihub_elastic_network
+    stop_signal: SIGTERM
+    stop_grace_period: 10m
 
 # ------------------ CELERY WORKER FOR NAMED QUEUES ------------------
 # Some plugins send their jobs to a named queue (transcribeWhisperX: high,
@@ -185,6 +195,7 @@ services:
   #     - archihub_mongo_network
   #     - archihub_elastic_network
   #   stop_signal: SIGTERM
+  #   stop_grace_period: 10m
 
 # --------------- CELERY WORKER FOR NAMED QUEUES, WITH GPU ---------------
 # The same worker as above with an NVIDIA GPU. Enable one of the two, not both.
@@ -218,6 +229,19 @@ services:
   #     - archihub_mongo_network
   #     - archihub_elastic_network
   #   stop_signal: SIGTERM
+  #   stop_grace_period: 10m
+
+# ------------------------- QDRANT SERVICE -------------------------
+# The vector database, for semantic search. Enable it together with the
+# vector database option in the system settings.
+
+  # qdrant:
+  #   image: qdrant/qdrant:v1.12.4
+  #   restart: always
+  #   volumes:
+  #     - ./qdrant:/qdrant/storage
+  #   networks:
+  #     - archihub_elastic_network
 
 # ---------------------- ELASTICSEARCH SERVICE ----------------------
   archihub_elasticsearch:
