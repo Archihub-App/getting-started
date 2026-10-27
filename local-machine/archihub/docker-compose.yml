@@ -19,6 +19,20 @@ x-archihub_env_variables: &archihub_env_variables
   UVICORN_WORKERS: ${UVICORN_WORKERS:-4}
   # Public address of the frontend, used to build password-reset links.
   REDIRECT_URL: ${REDIRECT_URL}
+  # Outgoing mail (password recovery). Empty means "not configured".
+  EMAIL_HOST: ${EMAIL_HOST:-}
+  EMAIL_PORT: ${EMAIL_PORT:-}
+  EMAIL_HOST_USER: ${EMAIL_HOST_USER:-}
+  EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD:-}
+  EMAIL_USE_TLS: ${EMAIL_USE_TLS:-}
+  EMAIL_ADDRESS: ${EMAIL_ADDRESS:-}
+  # Directory login. Off while LDAP_HOST is empty.
+  LDAP_HOST: ${LDAP_HOST:-}
+  LDAP_BASE_DN: ${LDAP_BASE_DN:-}
+  LDAP_USER_DN: ${LDAP_USER_DN:-}
+  LDAP_GROUP_DN: ${LDAP_GROUP_DN:-}
+  LDAP_TLS_CACERTFILE: ${LDAP_TLS_CACERTFILE:-}
+  LDAP_TLS_REQUIRE_CERT: ${LDAP_TLS_REQUIRE_CERT:-}
   # MongoDB. The database is named after the instance.
   MONGO_IP_SERVER: archihub_mongodb_server_01
   MONGO_PORT: '27017'
