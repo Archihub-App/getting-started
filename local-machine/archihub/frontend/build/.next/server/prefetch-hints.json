@@ -27,6 +27,25 @@
       }
     }
   },
+  "/admin/access-rights": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 160,
+                "slots": null
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "/admin/logs": {
     "hints": 0,
     "slots": {

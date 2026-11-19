@@ -44,6 +44,7 @@
   "/reset-password/page": "app/reset-password/page.js",
   "/upload/page": "app/upload/page.js",
   "/views/page": "app/views/page.js",
+  "/admin/access-rights/page": "app/admin/access-rights/page.js",
   "/admin/logs/page": "app/admin/logs/page.js",
   "/admin/permissions/page": "app/admin/permissions/page.js",
   "/admin/plugins/page": "app/admin/plugins/page.js",

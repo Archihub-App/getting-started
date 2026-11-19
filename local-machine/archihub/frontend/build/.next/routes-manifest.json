@@ -218,6 +218,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/admin/access-rights",
+      "regex": "^/admin/access\\-rights(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/access\\-rights(?:/)?$"
+    },
+    {
       "page": "/admin/logs",
       "regex": "^/admin/logs(?:/)?$",
       "routeKeys": {},

@@ -61,21 +61,67 @@ fi
 
 # ---- límites administrativos ----
 # Los archivos de límites (archihub/data/geo, ~24 MB) no vienen en el
-# repositorio. Si GEO_DATA_ARCHIVE apunta a un .tar.gz con las carpetas
-# admin_0, admin_1, ... (una ruta local o una URL https), se instalan en el
-# backend antes de construir la imagen; si no, el mapa queda sin límites hasta
-# que se carguen.
+# repositorio. Se instalan en el backend antes de construir la imagen, desde
+# uno de dos orígenes:
+#
+#   GEO_DATA_ARCHIVE=<ruta o URL https de un .tar.gz>   un archivo propio
+#   (sin definir)   se ofrecen los de GEO_SHAPES_SERVER, la URL del API de una
+#                   instancia de ArchiHUB con el plugin geoShapes activo (por
+#                   defecto la instancia pública de BITSOL; vacío para no
+#                   ofrecerlos); se pregunta antes de descargar, o se responde
+#                   con DESCARGAR_LIMITES=si|no.
+#
+# Sin límites, el mapa queda vacío hasta que se carguen con /system/geo-load.
 GEO_DIR=./archihub/backend/archihub/data/geo
-if [ -n "${GEO_DATA_ARCHIVE:-}" ]; then
+GEO_SHAPES_SERVER="${GEO_SHAPES_SERVER-https://archihub.bit-sol.com.co/api}"
+
+instalar_limites() {
     mkdir -p "$GEO_DIR"
+    tar -xzf "$1" -C "$GEO_DIR"
+    echo "Límites administrativos instalados en $GEO_DIR"
+}
+
+ofrecer_limites() {
+    local info sha256 tamano respuesta archivo
+
+    if ! info=$(curl -fsS "$GEO_SHAPES_SERVER/geoShapes/public/info"); then
+        echo "AVISO: $GEO_SHAPES_SERVER no ofrece límites administrativos."
+        return 1
+    fi
+    sha256=$(echo "$info" | sed -n 's/.*"sha256": *"\([0-9a-f]\{64\}\)".*/\1/p')
+    tamano=$(echo "$info" | sed -n 's/.*"size": *\([0-9]*\).*/\1/p')
+    [ -n "$sha256" ] && [ -n "$tamano" ] || { echo "AVISO: respuesta inesperada de $GEO_SHAPES_SERVER."; return 1; }
+
+    respuesta="${DESCARGAR_LIMITES:-}"
+    if [ -z "$respuesta" ]; then
+        [ -t 0 ] || return 1    # sin terminal no hay a quién preguntar
+        read -r -p "¿Descargar los límites administrativos de ArchiHUB ($((tamano / 1048576 + 1)) MB)? [s/N] " respuesta
+    fi
+    [[ "$respuesta" =~ ^[sS] ]] || return 1
+
+    archivo=$(mktemp)
+    if curl -fsSL -o "$archivo" "$GEO_SHAPES_SERVER/geoShapes/public/download" \
+        && echo "$sha256  $archivo" | sha256sum -c --quiet -; then
+        instalar_limites "$archivo"
+        rm -f "$archivo"
+    else
+        rm -f "$archivo"
+        echo "AVISO: la descarga falló o no coincide con su suma SHA-256; no se instaló nada."
+        return 1
+    fi
+}
+
+if [ -n "${GEO_DATA_ARCHIVE:-}" ]; then
     case "$GEO_DATA_ARCHIVE" in
         https://*)
-            curl -fsSL "$GEO_DATA_ARCHIVE" | tar -xz -C "$GEO_DIR" ;;
+            archivo=$(mktemp)
+            curl -fsSL -o "$archivo" "$GEO_DATA_ARCHIVE"
+            instalar_limites "$archivo"
+            rm -f "$archivo" ;;
         *)
-            tar -xzf "$GEO_DATA_ARCHIVE" -C "$GEO_DIR" ;;
+            instalar_limites "$GEO_DATA_ARCHIVE" ;;
     esac
-    echo "Límites administrativos instalados en $GEO_DIR"
-else
-    echo "AVISO: no se instalaron límites administrativos (defina GEO_DATA_ARCHIVE)."
+elif [ -z "$GEO_SHAPES_SERVER" ] || ! ofrecer_limites; then
+    echo "AVISO: no se instalaron límites administrativos."
     echo "       Sin ellos, /system/geo-load no tiene nada que cargar."
 fi

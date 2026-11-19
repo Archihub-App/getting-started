@@ -1,6 +1,6 @@
 {
   "name": "next-archihub-admin",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -29,7 +29,7 @@
     "lucide-react": "^1.11.0",
     "maplibre-gl": "^6.16.0",
     "medium-editor": "^5.23.3",
-    "next": "16.4.3",
+    "next": "16.4.6",
     "react": "19.2.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -65,7 +65,7 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.183.1",
     "eslint": "^9",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.6",
     "tailwindcss": "^4",
     "typescript": "^5",
     "webpack-obfuscator": "^3.6.1"

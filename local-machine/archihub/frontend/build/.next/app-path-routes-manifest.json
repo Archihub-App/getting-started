@@ -44,6 +44,7 @@
   "/reset-password/page": "/reset-password",
   "/upload/page": "/upload",
   "/views/page": "/views",
+  "/admin/access-rights/page": "/admin/access-rights",
   "/admin/logs/page": "/admin/logs",
   "/admin/permissions/page": "/admin/permissions",
   "/admin/plugins/page": "/admin/plugins",

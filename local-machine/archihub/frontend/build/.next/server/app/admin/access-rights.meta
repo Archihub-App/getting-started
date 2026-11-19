@@ -1,0 +1,40 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/access-rights/layout,_N_T_/admin/access-rights/page,_N_T_/admin/access-rights"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/_index",
+    "/admin/access-rights/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 0,
+    "slots": {
+      "children": {
+        "hints": 64,
+        "slots": {
+          "children": {
+            "hints": 96,
+            "slots": {
+              "children": {
+                "hints": 160,
+                "slots": null
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/bd4fccbed52301b1edc30e70b74d71cfe670620cfa55398ad3d998c24180532c/$/admin/access-rights",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/admin/access-rights/page"
+    },
+    "isFallback": false
+  }
+}
